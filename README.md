@@ -43,6 +43,15 @@ $ ./cassini.py watch [interval]
 _STL_B_Warriors_1_Sword_Combined_Supported.goo |███████████████████████████████████▉ ︎   | 90% 
 ```
 
+### Pause at target layer
+
+```
+$ ./cassini.py [--printer printer_ip] pause-at-layer 250 --interval 3
+```
+
+This watches the printer's current layer and sends a pause command when the
+current layer reaches or exceeds the target layer.
+
 ### File transfer
 
 ```
@@ -174,6 +183,9 @@ Commands discovered:
 | 1   | Unknown. Sent by CHITUBOX after 0. | None |
 | 64  | Maybe a disconnect? | None |
 | 128 | Start printing. | See below. |
+| 129 | Pause printing. Inferred from other SDCP implementations. | None |
+| 130 | Stop/cancel printing. Inferred from other SDCP implementations. | None |
+| 131 | Continue/resume printing. Inferred from other SDCP implementations. | None |
 | 256 | Upload file. | See below. |
 | 512 | Set some kind of time period. | `{ "TimePeriod": 5000 }` |
 
