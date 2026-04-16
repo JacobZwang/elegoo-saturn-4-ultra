@@ -14,6 +14,50 @@ Note: This is still a work in progress.
 License: MIT
 Copyright (C) 2023 Vladimir Vukicevic
 
+## Rust Library
+
+This repository now also provides a Rust library crate named `cassini`.
+
+Build and check it with:
+
+```bash
+cargo check
+```
+
+Example usage:
+
+```rust
+use std::sync::Arc;
+
+use cassini::{DiscoveryOptions, SaturnPrinter};
+use tokio::time::Duration;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+  let printers = SaturnPrinter::find_printers(DiscoveryOptions {
+    timeout: Duration::from_secs(1),
+    broadcast: None,
+  })
+  .await?;
+
+  for mut printer in printers {
+    printer.refresh_live_status().await?;
+    let status = printer.status();
+    println!(
+      "{} {} {}/{}",
+      printer.describe(),
+      status.filename,
+      status.current_layer,
+      status.total_layers
+    );
+  }
+
+  Ok(())
+}
+```
+
+Core library modules are in `src/saturn_printer.rs`, `src/simple_mqtt_server.rs`, and `src/simple_http_server.rs`.
+
 ## Usage
 
 Python 3 is required. Use `pip install -r requirements.txt` to install dependencies.
